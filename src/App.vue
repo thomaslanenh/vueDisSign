@@ -1,17 +1,19 @@
 <template>
   <audio :src="current" @timeupdate="time = $event.target.currentTime" ref="audio" @ended="nextTrack()" autoload="auto" preload="auto" autoplay></audio>
-  <div class="mainBlock" v-bind:style="{'background': `url(${data.image})`}">
-    <div></div>
-    <div class="innerBlock fade-in-text">
-      <h1 class="centerText">{{ride.name}}</h1>
-      <p>{{data.description}}</p>
-      <div class="rideTimes" v-if="ride.status === 'Operating'">
-        <p class="centerText">Current Wait Time:</p>
-        <h2 class="centerText" v-if="ride.waitTime != null">{{ride.waitTime}} minutes</h2>
-        <h2 class="centerText" v-else>No Wait</h2>
-      </div>
-      <div v-else class="closeRide centerText">
-        <p>Currently Closed</p>
+  <div class="parent">
+    <div class="mainBlock" v-bind:style="{'background': `url(${data.image})`}">
+      <div></div>
+      <div class="innerBlock fade-in-text">
+        <h1 class="centerText">{{ride.name}}</h1>
+        <p>{{data.description}}</p>
+        <div class="rideTimes" v-if="ride.status === 'Operating'">
+          <p class="centerText">Current Wait Time:</p>
+          <h2 class="centerText" v-if="ride.waitTime != null">{{ride.waitTime}} minutes</h2>
+          <h2 class="centerText" v-else>No Wait</h2>
+        </div>
+        <div v-else class="closeRide centerText">
+          <p>Currently Closed</p>
+        </div>
       </div>
     </div>
   </div>
@@ -115,14 +117,19 @@ export default {
 </script>
 
 <style>
+@font-face {
+  font-family: "Columbus";
+  src: local('COLUMBUS'), url(./fonts/COLUMBUS.TTF)format('truetype');
+}
+
 body{
   margin: 0px;
   background: #FCE97F;
-  animation: fadebackground 6s infinite;
-  transition: 0.3s ease-in-out all;
-
 }
 
+.parent{
+  height: 100vh;
+}
 h1{
   margin: 0px;
 }
@@ -139,18 +146,31 @@ h1{
 }
 
 .mainBlock{
-  height: 100vh;
+  height: 100%;
+  background-position: center !important;
   background-size: cover !important;
-  background-position: center center !important;
   display: grid;
   grid-template-columns: 75% auto;
+  background-repeat: repeat-x;
+  animation: animatedBackground 120s linear infinite alternate;
+  overflow: hidden;
 }
 
 .innerBlock{
-  background: rgba(150, 194, 213, 0.53);
+  background: rgba(89, 90, 90, 0.53);
   padding:25px;
-  overflow: hidden;   /*  hide scrollbars */
-  transition: background 300ms ease-in 200ms;
+  align-self: center;
+  margin-right: 25px;
+  font-family: "Columbus", src;
+}
+
+@keyframes animatedBackground {
+  from {
+    background-position: 50% 20%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
 }
 
 @keyframes fadebackground {
