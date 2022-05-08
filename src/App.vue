@@ -10,7 +10,7 @@
         <transition name="fade">
         <div class="innerBlock fade-in-text" key="data">
           <h1 class="centerText">{{ride.name}}</h1>
-          <p>{{data.description}}</p>
+          <p v-html="data.description"/>
           <div class="rideTimes" v-if="ride.status === 'Operating'">
             <p class="centerText">Current Wait Time:</p>
             <h2 class="centerText" v-if="ride.waitTime != null">{{ride.waitTime}} minutes</h2>
