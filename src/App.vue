@@ -1,7 +1,6 @@
 <template>
   <audio :src="current" @timeupdate="time = $event.target.currentTime" ref="audio" @ended="nextTrack()" autoload="auto" preload="auto" autoplay></audio>
   <div class="parent">
-
       <div class="mainBlock">
         <div>
           <transition name="fade" appear>
