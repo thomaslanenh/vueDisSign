@@ -1,28 +1,29 @@
 <template>
   <audio :src="current" @timeupdate="time = $event.target.currentTime" ref="audio" @ended="nextTrack()" autoload="auto" preload="auto" autoplay></audio>
   <div class="parent">
-      <div class="mainBlock" >
+
+      <div class="mainBlock">
         <div>
           <transition name="fade" appear>
             <img :src="bgImg" :key="bgImg"/>
           </transition>
         </div>
-        <transition name="fade">
-        <div class="innerBlock fade-in-text" key="data">
-          <h1 class="centerText">{{ride.name}}</h1>
-          <p v-html="data.description"/>
-          <div class="rideTimes" v-if="ride.status === 'Operating'">
-            <p class="centerText">Current Wait Time:</p>
-            <h2 class="centerText" v-if="ride.waitTime != null">{{ride.waitTime}} minutes</h2>
-            <h2 class="centerText" v-else>No Wait</h2>
-          </div>
-          <div v-else class="closeRide centerText">
-            <p>Currently Closed</p>
-          </div>
-        </div>
-        </transition>
-      </div>
 
+          <div class="innerBlock fade-in-text" :key="currentSlide">
+            <transition name="fade" appear>
+            <h1 class="centerText" :key="bgImg">{{ride.name}}</h1>
+        </transition>
+            <p v-html="data.description"/>
+            <div class="rideTimes" v-if="ride.status === 'Operating'">
+              <p class="centerText">Current Wait Time:</p>
+              <h2 class="centerText" v-if="ride.waitTime != null">{{ride.waitTime}} minutes</h2>
+              <h2 class="centerText" v-else>No Wait</h2>
+            </div>
+            <div v-else class="closeRide centerText">
+              <p>Currently Closed</p>
+            </div>
+          </div>
+      </div>
   </div>
 
 </template>
@@ -31,11 +32,15 @@
 export default {
   name: 'App',
   data(){
-    let playlist = ['https://www.pythonanywhere.com/user/disneyquesting/files/home/disneyquesting/Pirates of the Caribbean - Queue Area Music Loop.mp4', 'https://www.pythonanywhere.com/user/disneyquesting/files/home/disneyquesting/Fantasyland.mp3','https://www.pythonanywhere.com/user/disneyquesting/files/home/disneyquesting/Adventureland.mp3','https://www.pythonanywhere.com/user/disneyquesting/files/home/disneyquesting/SpaceMountain.mp3','https://www.pythonanywhere.com/user/disneyquesting/files/home/disneyquesting/Frontierland.mp3','https://www.pythonanywhere.com/user/disneyquesting/files/home/disneyquesting/Tommorrowland.mp3','https://www.pythonanywhere.com/user/disneyquesting/files/home/disneyquesting/MainStreetUSA.mp3'];
+    let playlist = [
+        'http://18123.live.streamtheworld.com/SP_R3956612_SC'
+    ]
+    // let playlist = ['https://www.pythonanywhere.com/user/disneyquesting/files/home/disneyquesting/Fantasyland.mp3','https://www.pythonanywhere.com/user/disneyquesting/files/home/disneyquesting/Adventureland.mp3','https://www.pythonanywhere.com/user/disneyquesting/files/home/disneyquesting/SpaceMountain.mp3','https://www.pythonanywhere.com/user/disneyquesting/files/home/disneyquesting/Frontierland.mp3','https://www.pythonanywhere.com/user/disneyquesting/files/home/disneyquesting/Tommorrowland.mp3','https://www.pythonanywhere.com/user/disneyquesting/files/home/disneyquesting/MainStreetUSA.mp3'];
     return {
       data: {},
       bgImg: {},
       ride: {},
+      currentSlide: {},
       time: 0,
       playing: true,
       current: playlist[Math.floor(Math.random() * playlist.length)],
@@ -107,10 +112,10 @@ export default {
 
       this.ride = ranRide;
       console.log(ranRide)
+
       let pickedRide = await fetch(rides + ranRide.name).then(res=>res.json());
-
       this.bgImg = pickedRide[0].image;
-
+      this.currentSlide = pickedRide[0].name;
       this.data = pickedRide[0];
 
 
@@ -140,7 +145,6 @@ export default {
 
 body{
   margin: 0px;
-  background: #FCE97F;
 }
 
 .parent{
